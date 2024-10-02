@@ -11,13 +11,15 @@ function Quiz_Game() {
     const [questionCount,setQuestionCount] = useState(0)
     const [showScore,setShowScore] = useState(false);
     const [score,setScore] = useState(0);
-    const [selectedOption,setSelectedOption] = useState(0)
-
+    const [selectedOption,setSelectedOption] = useState(null)
+const [hovereedIndex,setHoveredIndex ] = useState(null);
 
     const handleClick=()=>
     {
+        setSelectedOption(null)
         if(questionCount<questionsList.length-1){
             setQuestionCount(questionCount+1)
+           
         }
         else{
             setShowScore(true)
@@ -40,6 +42,14 @@ function Quiz_Game() {
         }
 
     }
+    const handleMOuseEnter=(index)=>
+    {
+        setHoveredIndex(index)
+    }
+    const handleMouseLeave=()=>
+    {
+        setHoveredIndex(null)
+    }
 
 
 
@@ -51,7 +61,8 @@ function Quiz_Game() {
                 {!showScore && <div className="container_box">
                     <div className="question">{questionsList[questionCount].question}</div>
                    
-                   {questionsList[questionCount].options.map((ql,index)=><li  onClick={()=>handleAnswer(index)}>{ql}</li>)} 
+                   {questionsList[questionCount].options.map((ql,index)=><li onMouseEnter={()=>handleMOuseEnter(index)} onMouseLeave={handleMouseLeave}   onClick={()=>handleAnswer(index)}  style={{
+                                    backgroundColor: selectedOption === index ? 'purple' : (hovereedIndex==index? 'purple':'white') }}>{ql}</li>)} 
                    <button onClick={handleClick} className="btn btn-primary btn-lg">
                     {questionCount==questionsList.length? 'Try Again': 'Next'}</button> 
                    </div> }
